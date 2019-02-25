@@ -18,9 +18,12 @@ namespace Library
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _appHost;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment appHost)
         {
             Configuration = configuration;
+            _appHost = appHost;
         }
 
         public IConfiguration Configuration { get; }
@@ -39,8 +42,15 @@ namespace Library
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton(Configuration);
             services.AddScoped<ILibraryAsset, LibraryAssetService>();
+            services.AddScoped<ICheckout, CheckoutService>();
 
-            services.AddDbContext<LibraryContext>(options => options.UseSqlite("Filename=Library_Dev.db"));
+            //services.AddDbContext<LibraryContext>(options => options.UseSqlite("Filename=Library_Dev.db"));
+
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<LibraryContext>(
+                    options => { options.UseSqlite($"Data Source={_appHost.ContentRootPath}/Library_Dev.db"); });
+
+            //services.AddDbContext<LibraryContext>(options => options.UseSqlite("Filename=Library_Dev.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
