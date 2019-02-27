@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LibraryData;
-using LibraryData.Models;
 using LibraryServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +37,8 @@ namespace Library
             services.AddSingleton(Configuration);
             services.AddScoped<ILibraryAsset, LibraryAssetService>();
             services.AddScoped<ICheckout, CheckoutService>();
+            services.AddScoped<IPatron, PatronService>();
+            services.AddScoped<ILibraryBranch, LibraryBranchService>();
 
             //services.AddDbContext<LibraryContext>(options => options.UseSqlite("Filename=Library_Dev.db"));
 
